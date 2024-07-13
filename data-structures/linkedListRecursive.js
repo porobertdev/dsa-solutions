@@ -219,3 +219,5 @@ console.log(lnkList.size());
 
 lnkList.append('oh yea');
 console.log(lnkList);
+
+export { LinkedList, Node };
