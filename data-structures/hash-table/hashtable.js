@@ -5,7 +5,7 @@ import { LinkedList } from '../linkedListRecursive.js';
  * @constructor
  * @param {number} [size] - The size of the table.
  */
-class Hashmap {
+export default class Hashmap {
     constructor(size = this.#initialSize) {
         this.size = size;
         this.table = Array(this.size);
@@ -20,6 +20,12 @@ class Hashmap {
      * @param {string} key - The name of the key.
      */
     #hash(key) {
+        /*
+        Time Complexity: O(1) + O(1) + O(N) + O(1) + O(1) => O(4) + O(N) => O(N) - Linear - because it depends on the number of chars in the string
+
+        Space Complexity: O(1) - Constant - because variables are reused
+        */
+
         let hashCode = 0;
 
         const primeNumber = 31;
@@ -37,13 +43,19 @@ class Hashmap {
      * @function
      */
     #checkGrowth() {
+        /* 
+        Time Complexity: O(N) + O(1) + O(1) => O(N) + O(2) => O(N) - linear - because filter() depends on the number of array indexes that are not empty
+
+        Space Complexity: O(1)
+        */
+
         const usedBuckets = this.table.filter((bucket) => !!bucket).length;
 
         // extend the table (double in size);
         if (usedBuckets >= this.size * this.#loadFactor) {
             console.warn('\n[Growth Factor] Triggered, resizing table...\n');
+            this.table = this.table.concat(Array(this.size));
             this.size *= 2;
-            this.table = this.table.concat(Array(this.size / 2));
         }
     }
 
@@ -53,6 +65,12 @@ class Hashmap {
      * @param {string} type - The type of values to get: key/values/entries
      */
     #getObjValues(type) {
+        /*
+        Time Complexity: O(n^2) - Quadratic - bcoz one for loop and one while loop (traverse) for each bucket that is a linked list
+        
+        Space Complexity: O(N) bcoz depends on number of keys present in the hash table
+        */
+
         const nodes = {};
 
         for (const bucket of this.table) {
@@ -79,6 +97,12 @@ class Hashmap {
      * @param {function} cb - Callback to run for each node
      */
     #traverse(bucket, cb) {
+        /*
+        Time Complexity: O(N) - depends on number of nodes in the Linked List
+        
+        Space Complexity: O(1) - variables are reused
+        */
+
         let node = bucket.head;
         let isNodeFound = false;
 
@@ -103,6 +127,12 @@ class Hashmap {
      * @param {string} value - The value for the key.
      */
     set(key, value) {
+        /*
+        Time Complexity: O(N) - the `has()` function traverses a linked list
+        
+        Space Complexity: O(1)
+        */
+
         this.#checkGrowth();
 
         // generate hash code
@@ -119,12 +149,12 @@ class Hashmap {
 
         console.log(`[SET] - Adding {${key}:${value}} pair at index ${index}`);
 
-        const obj = { [key]: value };
+        const node = { [key]: value };
 
         // if it's empty bucket or the key is present & not a linked list
         if (!bucket || bucket[key]) {
             // create or update the key-pair value
-            this.table[index] = obj;
+            this.table[index] = node;
         } else {
             // if bucket has one value and needs to store more, and isn't a linked list
             if (!bucket.head) {
@@ -133,7 +163,7 @@ class Hashmap {
                 this.table[index] = lnkList;
             }
 
-            this.table[index].prepend(obj);
+            this.table[index].prepend(node);
         }
     }
 
@@ -143,6 +173,12 @@ class Hashmap {
      * @param {string} key - The name of the key.
      */
     get(key) {
+        /*
+        Time Complexity: O(N) - bcoz of traverse()
+        
+        Space Complexity: O(1) - variables are reused
+        */
+
         // return the value of that key or null if doesn't exist
         const index = this.#hash(key);
         const bucket = this.table[index];
@@ -154,8 +190,6 @@ class Hashmap {
                     if (node.value[key]) {
                         return node.value[key];
                     }
-
-                    return null;
                 });
             } else if (bucket[key]) {
                 keyValue = bucket[key];
@@ -174,6 +208,12 @@ class Hashmap {
      */
     has(key, index = this.#hash(key), bucket = this.table[index]) {
         /*
+        Time Complexity: O(N)
+        
+        Space Complexity: O(1)
+        */
+
+        /*
         The function take use of default values for the parameters,
         so it doesn't run the hash function again when it's called
         by `set()` function
@@ -188,7 +228,7 @@ class Hashmap {
                     (node) => node.value[key] !== undefined
                 );
             } else {
-                // it's a simple bucket (arr) with one item, not a linked list
+                // it's a simple bucket (obj) with one item, not a linked list
                 isKeyFound = bucket[key] !== undefined;
             }
         }
@@ -202,6 +242,12 @@ class Hashmap {
      * @param {string} key - The name of the key.
      */
     remove(key) {
+        /*
+        Time Complexity: O(N)
+        
+        Space Complexity: O(1)
+        */
+
         const index = this.#hash(key);
         const bucket = this.table[index];
         let isKeyRemoved = false;
@@ -209,7 +255,6 @@ class Hashmap {
         if (bucket) {
             if (bucket.head) {
                 isKeyRemoved = this.#traverse(bucket, (node) => {
-                    console.log(node);
                     if (node.value !== null && node.value[key]) {
                         if (node.next === null) {
                             node.value = null;
@@ -235,12 +280,16 @@ class Hashmap {
      * @function
      */
     length() {
+        /*
+        Time Complexity: O(n^2) - Quadratic - bcoz one for loop and one while loop (traverse) for each bucket that is a linked list
+        
+        Space Complexity: O(1)
+        */
+
         let keys = 0;
 
         this.table.forEach((bucket) => {
-            console.log(bucket);
-
-            if (bucket !== null) {
+            if (bucket) {
                 // if it's a linked list
                 if (bucket.head) {
                     this.#traverse(bucket, (node) => {
@@ -259,6 +308,12 @@ class Hashmap {
     }
 
     clear() {
+        /*
+        Time Complexity: O(1)
+        
+        Space Complexity: O(1)
+        */
+
         this.size = this.#initialSize;
         this.table = Array(this.size);
     }
@@ -278,72 +333,3 @@ class Hashmap {
         return this.#getObjValues('entries');
     }
 }
-
-// TESTING
-const table = new Hashmap();
-
-// SET TESTS
-table.set('apple', 'red');
-table.set('apple', 'red');
-table.set('banana', 'yellow');
-table.set('carrot', 'orange');
-table.set('dog', 'brown');
-table.set('elephant', 'gray');
-table.set('frog', 'green');
-table.set('grape', 'purple');
-table.set('hat', 'black');
-table.set('ice cream', 'white');
-table.set('jacket', 'blue');
-table.set('kite', 'pink');
-table.set('lion', 'golden');
-table.set('moon', 'silver');
-table.set('moon', 'silver');
-
-// GET TEST
-console.log(table.get('lion'));
-console.log(table.get('banana'));
-console.log(table.get('moon'));
-console.log(table.get('apple'));
-console.log(table.get('nope'));
-console.log(table.get("this doesn't exist"));
-console.log(table.get('carrot'));
-
-// HAS TEST
-console.log(table.has('lion'));
-console.log(table.has('banana'));
-console.log(table.has('moon'));
-console.log(table.has('apple'));
-console.log(table.has('nopzze'));
-console.log(table.has('wtf'));
-console.log(table.has('ice cream'));
-
-// REMOVE TEST
-console.log(table.remove('jacket'));
-console.log(table.remove('elephant'));
-console.log(table.remove('carrot'));
-console.log(table.remove('carrot'));
-console.log(table.remove('doesnt exist'));
-
-table.set('fausufas', 'askrkaks');
-table.set('igdsignids', 'omgg');
-table.set('saroasroo', 'fdsoo');
-table.set('asdasida', 'oksksk');
-table.set('omgg', 'yess');
-table.set('testing askdasi', 'opups');
-table.set('calisthenics', 'cool af');
-table.set('lets goo bro', 'oguggugu');
-table.set('asdlasodasodasiodasisaidas', 'oguggugu');
-table.set('zxzxifiw', 'oguggugu');
-
-console.log(table);
-
-// LENGTH TEST
-console.log(table.length());
-
-console.log(table.keys());
-console.log(table.values());
-console.log(table.entries());
-
-// CLEAR TEST
-table.clear();
-console.log(table);
