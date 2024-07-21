@@ -102,7 +102,7 @@ class Tree {
         }
     }
 
-    leverlOrder(callback, node = this.root, queue = []) {
+    levelOrder(callback, node = this.root, queue = []) {
         // breadth-first traversal
         const arr = [];
 
@@ -127,7 +127,7 @@ class Tree {
             callback(node);
         }
 
-        return arr.concat(this.leverlOrder(callback, queue.shift(), queue));
+        return arr.concat(this.levelOrder(callback, queue.shift(), queue));
     }
 
     preorder(callback, node = this.root) {
@@ -257,7 +257,7 @@ class Tree {
             console.log('\n\nTREE IS NOT BALANCED. REBALANCING...\n\n');
 
             // convert tree to arr using BFS (breadth-first search)
-            const arr = this.leverlOrder();
+            const arr = this.levelOrder();
             console.log(arr);
 
             this.root = this.buildBalancedTree(this.#processArr(arr));
@@ -314,8 +314,8 @@ for (const test of tests) {
     console.log(binaryTree.find(70));
 
     // without cb: returns arr
-    console.log('===== LEVEL ORDER =====', binaryTree.leverlOrder());
-    binaryTree.leverlOrder((node) => console.log(node.data));
+    console.log('===== LEVEL ORDER =====', binaryTree.levelOrder());
+    binaryTree.levelOrder((node) => console.log(node.data));
 
     // preorder
     console.log('===== PREORDER =====', binaryTree.preorder());
