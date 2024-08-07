@@ -1,0 +1,10 @@
+{
+  "name": "",
+  "version": "",
+  "description": "My solutions to The Odin Project's assignments for Computer Science lessons",
+  "dependencies": {
+    "eslint": "^9.8.0",
+    "prettier": "^3.3.3"
+  },
+  "type": "module"
+}
