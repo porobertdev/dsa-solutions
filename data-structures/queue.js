@@ -11,39 +11,47 @@ class Queue {
         this.size = 0;
     }
 
-    #maxSize = 8;
+    // #maxSize = 8;
 
     enqueue(value) {
-        if (this.size < this.#maxSize) {
-            const node = new Node(value);
+        // find tail node
 
-            if (this.head === null) {
-                this.head = node;
-            } else {
-                node.next = this.head;
-                this.head = node;
+        // if (this.size < this.#maxSize) {
+        const node = new Node(value);
+
+        if (this.head === null) {
+            this.head = node;
+        } else {
+            // find tail
+            let currNode = this.head;
+
+            while (currNode.next !== null) {
+                currNode = currNode.next;
             }
+
+            currNode.next = node;
         }
+        // }
 
         this.size += 1;
     }
 
-    dequeue(node = this.head) {
-        // find tail - node.next == null means tail node
+    dequeue() {
+        const dequeued = this.head.value;
 
-        if (this.size > 0) {
-            // base case
-            // if there's only this.head (root)
-            if (this.size === 1 || node.next.next === null) {
-                this.size === 1 ? (this.head = null) : (node.next = null);
-
-                this.size -= 1;
-                return;
-            }
-
-            // recursive case
-            this.dequeue(node.next);
+        if (this.size > 1) {
+            this.head = this.head.next;
+        } else {
+            this.head = null;
         }
+
+        this.size -= 1;
+
+        return dequeued;
+    }
+
+    isEmpty() {
+        return this.size === 0;
     }
 }
 
@@ -54,6 +62,6 @@ queue.enqueue(39);
 queue.enqueue(50);
 queue.dequeue();
 queue.dequeue();
-queue.dequeue();
-
 console.log(queue);
+
+export default Queue;
