@@ -1,0 +1,334 @@
+---
+import Button from '../../components/Button.astro';
+import Graph from '../../components/Graph.astro';
+import Info from '../../components/Info.astro';
+import Log from '../../components/Log.astro';
+import ProblemLayout from '../../layouts/ProblemLayout.astro';
+---
+
+<ProblemLayout title="Knight Travails">
+    <!--    (div.row>((div.column.square.black)+(div.column.square.white))*4)+(div.row>((div.column.square.white)+(div.column.square.black)))*4 -->
+
+    <!--     ((div.row>((div.column.square.black)+(div.column.square.white))*4)+(div.row>((div.column.square.white)+(div.column.square.black))*4))*4 -->
+    <!-- div.row>((div.column.square.black)+(div.column.square.white))*4 div.row>((div.column.square.white)+(div.column.square.black))*4 -->
+    <!-- ((div.row$@0>((div.column-$0.square.black)+(div.column.square.white))*4)+(div.row$@1>((div.column.square.white)+(div.column.square.black))*4))* -->
+
+    <!-- <Graph /> -->
+
+    <div class="knight-travail">
+        <div class="chess-table">
+            <div class="col-numbers">
+                <div class="number">0</div>
+                <div class="number">1</div>
+                <div class="number">2</div>
+                <div class="number">3</div>
+                <div class="number">4</div>
+                <div class="number">5</div>
+                <div class="number">6</div>
+                <div class="number">7</div>
+            </div>
+            <div class="row-numbers">
+                <div class="number">0</div>
+                <div class="number">1</div>
+                <div class="number">2</div>
+                <div class="number">3</div>
+                <div class="number">4</div>
+                <div class="number">5</div>
+                <div class="number">6</div>
+                <div class="number">7</div>
+            </div>
+            <!-- squares starts here -->
+            <div class="row-0">
+                <div class="square black column-0"></div>
+                <div class="square white column-1"></div>
+                <div class="square black column-2"></div>
+                <div class="square white column-3"></div>
+                <div class="square black column-4"></div>
+                <div class="square white column-5"></div>
+                <div class="square black column-6"></div>
+                <div class="square white column-7"></div>
+            </div>
+            <div class="row-1">
+                <div class="square white column-0"></div>
+                <div class="square black column-1"></div>
+                <div class="square white column-2"></div>
+                <div class="square black column-3"></div>
+                <div class="square white column-4"></div>
+                <div class="square black column-5"></div>
+                <div class="square white column-6"></div>
+                <div class="square black column-7"></div>
+            </div>
+            <div class="row-2">
+                <div class="square black column-0"></div>
+                <div class="square white column-1"></div>
+                <div class="square black column-2"></div>
+                <div class="square white column-3"></div>
+                <div class="square black column-4"></div>
+                <div class="square white column-5"></div>
+                <div class="square black column-6"></div>
+                <div class="square white column-7"></div>
+            </div>
+            <div class="row-3">
+                <div class="square white column-0"></div>
+                <div class="square black column-1"></div>
+                <div class="square white column-2"></div>
+                <div class="square black column-3"></div>
+                <div class="square white column-4"></div>
+                <div class="square black column-5"></div>
+                <div class="square white column-6"></div>
+                <div class="square black column-7"></div>
+            </div>
+            <div class="row-4">
+                <div class="square black column-0"></div>
+                <div class="square white column-1"></div>
+                <div class="square black column-2"></div>
+                <div class="square white column-3"></div>
+                <div class="square black column-4"></div>
+                <div class="square white column-5"></div>
+                <div class="square black column-6"></div>
+                <div class="square white column-7"></div>
+            </div>
+            <div class="row-5">
+                <div class="square white column-0"></div>
+                <div class="square black column-1"></div>
+                <div class="square white column-2"></div>
+                <div class="square black column-3"></div>
+                <div class="square white column-4"></div>
+                <div class="square black column-5"></div>
+                <div class="square white column-6"></div>
+                <div class="square black column-7"></div>
+            </div>
+            <div class="row-6">
+                <div class="square black column-0"></div>
+                <div class="square white column-1"></div>
+                <div class="square black column-2"></div>
+                <div class="square white column-3"></div>
+                <div class="square black column-4"></div>
+                <div class="square white column-5"></div>
+                <div class="square black column-6"></div>
+                <div class="square white column-7"></div>
+            </div>
+            <div class="row-7">
+                <div class="square white column-0"></div>
+                <div class="square black column-1"></div>
+                <div class="square white column-2"></div>
+                <div class="square black column-3"></div>
+                <div class="square white column-4"></div>
+                <div class="square black column-5"></div>
+                <div class="square white column-6"></div>
+                <div class="square black column-7"></div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <Info
+                msg=`Given a start and end position (row, column), find the shortest path
+    that the Knight chess piece can take from start to end.`
+            />
+
+            <Button text="Random" classes="random" />
+
+            <div class="algorithm">
+                <label for="algorithm">Algorithm:</label>
+                <select name="algorithm" id="algorithm">
+                    <option value="bfs">Breadth First Search</option>
+                </select>
+            </div>
+
+            <Log msg="Click twice to select [start] and [end] squares" />
+        </div>
+    </div>
+</ProblemLayout>
+
+<script>
+    import table from '../../../problems/knight-travails/knight-travails.js';
+    import * as dom from './knight-travails/dom';
+
+    let start, end;
+
+    const squares = document.querySelectorAll('.square');
+    squares.forEach((square) => square.addEventListener('click', clickHandler));
+
+    const random = document.querySelector('button.random');
+    random.addEventListener('click', randomize);
+
+    function randomize() {
+        function generateNumber() {
+            const row = Math.floor(Math.random() * 7);
+            const col = Math.floor(Math.random() * 7);
+            return [row, col];
+        }
+        clickHandler(generateNumber());
+        clickHandler(generateNumber());
+    }
+
+    function clickHandler(event) {
+        let row, col;
+        if (Array.isArray(event)) {
+            // it's called from randomize()
+            [row, col] = event;
+        } else {
+            row = +event.target.parentElement.className.split('-')[1];
+            col = +event.target.className.split('-')[1];
+            console.log(col, row);
+        }
+
+        // reset for the next time
+        if (start && end) {
+            dom.reset();
+            start = '';
+            end = '';
+        }
+
+        if (!start) {
+            start = [row, col];
+            dom.displayMove('start', start);
+            return;
+        } else if (!end) {
+            end = [row, col];
+            dom.displayMove('end', end);
+            // continue to displayPath
+        }
+
+        // start algorithm
+        const path = table.findShortest(start, end);
+        dom.displayPath(path);
+    }
+</script>
+
+<style>
+    :root {
+        --fs-square-mobile: 1.7rem;
+    }
+
+    .knight-travail {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4rem;
+
+        padding: 2.5rem;
+    }
+
+    .chess-table {
+        width: max-content;
+        /* margin: 0 auto; */
+        border: 5px solid black;
+
+        /* display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(8, 1fr); */
+
+        /* required for numbering columns */
+        position: relative;
+
+        .col-numbers {
+            display: flex;
+            justify-content: space-around;
+            position: absolute;
+            top: -7%;
+            width: 100%;
+        }
+
+        .row-numbers {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+
+            position: absolute;
+            left: -7%;
+            height: 100%;
+        }
+    }
+
+    /* .top {
+        display: flex;
+    } */
+
+    [class^='row'] {
+        width: max-content;
+        display: flex;
+    }
+
+    .square {
+        height: 70px;
+        width: 70px;
+        border: 1px solid black;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.white {
+            background-color: white;
+        }
+
+        &.black {
+            background-color: black;
+        }
+
+        /* selected squares */
+        &:hover {
+            background-color: red;
+            cursor: pointer;
+        }
+
+        &.selected {
+            background-color: rgb(72, 255, 0);
+            /* transition: 2s; */
+        }
+
+        &.start {
+            background-color: yellow;
+        }
+
+        &.end {
+            background-color: red;
+        }
+    }
+
+    .knight {
+        width: 50%;
+        height: 50%;
+        border-radius: 100%;
+        background-color: blueviolet !important;
+    }
+
+    /* CONTROL PANEL */
+    .control-panel {
+        width: max-content;
+
+        display: flex;
+        flex-direction: column;
+
+        button.random {
+            width: max-content;
+        }
+    }
+
+    /* MOBILE */
+    @media screen and (max-width: 636px) {
+        body {
+            /* padding: 2rem; */
+            /* margin: 0 -0.5rem; */
+            /* position: relative; */
+            /* padding: 10rem; */
+            margin: -4rem;
+        }
+
+        .knight-travail {
+            display: block;
+            padding: 10rem;
+            /* margin: ; */
+            /* margin: 0 5rem; */
+            /* padding: 0 5rem; */
+            width: 10%;
+        }
+
+        .chess-table {
+            .number {
+                font-size: var(--fs-square-mobile);
+            }
+        }
+    }
+</style>

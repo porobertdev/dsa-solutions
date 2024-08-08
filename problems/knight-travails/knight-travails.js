@@ -46,16 +46,16 @@ class ChessTable {
                             `\nEnd position found. SHORTEST PATH has ${shortest.length - 1} edges:\n\n`,
                             shortest
                         );
-                        return;
+                        return shortest;
                     } else if (!paths[nextMove]) {
                         // if next path doesn't exist, then create it by using the current path that leads to it
                         paths[nextMove] = paths[vertex].concat([nextMove]);
                     }
 
                     // enqueue if the node wasn't visited
-                    if (!visited.toString().includes(nextMove.toString())) {
+                    // if (!visited.toString().includes(nextMove.toString())) {
                         queue.enqueue(nextMove);
-                    }
+                    // }
 
                     visited.push(nextMove);
                 }
@@ -76,3 +76,6 @@ const table = new ChessTable(8);
 table.findShortest([0, 0], [7, 7]); // [0, 0], [2, 1], [0, 2], [2, 3], [4, 4], [6, 5], [7, 7]
 table.findShortest([0, 0], [3, 3]); // [ [ 0, 0 ], [ 2, 1 ], [ 3, 3 ] ]
 table.findShortest([3, 3], [4, 3]); // [ [ 3, 3 ], [ 1, 2 ], [ 3, 1 ], [ 4, 3 ] ]
+table.findShortest([7, 0], [0, 7]); // [ [ 3, 3 ], [ 1, 2 ], [ 3, 1 ], [ 4, 3 ] ]
+
+export default table;

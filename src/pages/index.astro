@@ -1,0 +1,38 @@
+---
+import Info from '../components/Info.astro';
+import List from '../components/List.astro';
+import ProblemLayout from '../layouts/ProblemLayout.astro';
+import Knight from './problems/knight-travails.astro';
+---
+
+<body lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content={Astro.generator} />
+        <title>DSA Solutions</title>
+
+        <!-- TODO: fix scripts when ViewTransitions are used -->
+        <!-- <ViewTransitions /> -->
+    </head>
+
+    <ProblemLayout title="DSA-Solutions">
+        <Info
+            msg=`
+        Hi. This website contains my solutions to DSA exercises from The Odin Project, together with my own implementations of the algorithms and data structures.
+        
+        You can check the console, but also look at the visual representation.
+
+        I hope it helps :)
+        `
+        />
+        <List />
+    </ProblemLayout>
+
+    <style>
+        div.info {
+            background-color: red !important;
+        }
+    </style>
+</body>

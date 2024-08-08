@@ -1,0 +1,142 @@
+---
+import Button from '../../components/Button.astro';
+import Info from '../../components/Info.astro';
+import Log from '../../components/Log.astro';
+import ProblemLayout from '../../layouts/ProblemLayout.astro';
+---
+
+<ProblemLayout title="Queue">
+    <!-- CONTROL PANEL -->
+    <div class="control-panel">
+        <form action="">
+            <label for="value">Value:</label>
+            <input type="text" name="value" id="value" />
+            <Button text="Enqueue" classes="enqueue" />
+            <Button text="Dequeue" classes="dequeue" />
+            <Button text="Random" classes="random" />
+            <!-- <Button text="isEmpty" classes="isEmpty" />
+                <Button text="isFull" classes="isFull" />
+                <Button text="Get Size" classes="size" /> -->
+        </form>
+        <div class="wrapper">
+            <!-- INFO -->
+            <Info
+                msg=`A queue is a data structure that works based on FIFO principle: First-In-First-Out.
+        
+                            In other words, the first element that is added into the queue will be the first served and to get out.
+        
+                            The next elements that are added will get at the end (tail) of the queue.
+                            `
+            />
+            <!-- LOG -->
+            <Log />
+        </div>
+    </div>
+    <div class="queue-squares"></div>
+</ProblemLayout>
+
+<script>
+    import Queue from '../../../data-structures/queue';
+    import { addLog } from './knight-travails/dom';
+
+    // DOM
+    const container = document.querySelector('.queue-squares');
+    const enqueueBtn = document.querySelector('button.enqueue');
+    const dequeueBtn = document.querySelector('button.dequeue');
+    const randomBtn = document.querySelector('button.random');
+
+    // create queue
+    const queue = new Queue();
+
+    enqueueBtn.addEventListener('click', displayEnqueue);
+
+    dequeueBtn.addEventListener('click', displayDequeue);
+
+    randomBtn.addEventListener('click', randomize);
+
+    function randomize() {
+        for (let i = 0; i <= 15; i++) {
+            const number = Math.floor(Math.random(100) * 100);
+            queue.enqueue(number);
+
+            displayEnqueue(number);
+        }
+    }
+
+    function displayEnqueue(value) {
+        if (value.target) {
+            // it's event
+            value = document.getElementById('value').value;
+        }
+
+        // if value is not empty
+        if (value) {
+            queue.enqueue(value);
+
+            const square = document.createElement('div');
+            square.classList.add('square');
+            square.textContent = value;
+            container.appendChild(square);
+            addLog(`Enqueued: ${value}`);
+        }
+    }
+
+    function displayDequeue() {
+        if (!queue.isEmpty()) {
+            const value = queue.dequeue();
+
+            const square = document.querySelector('.square:first-child');
+            console.log('🚀 ~ displayDequeue ~ square:', square);
+            container.removeChild(square);
+
+            addLog(`Dequeued: ${value}`);
+        }
+    }
+</script>
+
+<style>
+    .control-panel {
+        width: 50%;
+        margin: 0 auto;
+
+        display: flex;
+        /* justify-content: space-around; */
+        align-items: center;
+        gap: 4rem;
+
+        form {
+            /* width: 20%; */
+            /* margin: 0 auto; */
+
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            button {
+                margin: 0;
+            }
+        }
+
+        .info {
+            width: 40ch;
+        }
+    }
+
+    .queue-squares {
+        margin-top: 2rem;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .square {
+            border: 1px solid black;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            n: slide-left 1.5s ease-in-out both;
+        }
+    }
+</style>

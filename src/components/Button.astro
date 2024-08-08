@@ -1,0 +1,30 @@
+---
+const { type = 'button', classes, text, onClick = () => {} } = Astro.props;
+---
+
+<button type={type} class={classes} onclick={onClick}>{text}</button>
+
+<style>
+    button {
+        /* custom */
+        padding: 0.8rem 2rem;
+        border-radius: 6px;
+        margin: 1rem 0;
+        background-color: var(--btn-bkg);
+        color: var(--btn-clr);
+    }
+
+    button:hover {
+        background-color: var(--btn-bkg-hover);
+        color: var(--btn-bkg-clr);
+    }
+
+    /* MOBILE */
+    @media screen and (max-width: 636px) {
+        button {
+            width: 100%;
+            padding: 1.3rem 4rem;
+            font-size: 1.5rem;
+        }
+    }
+</style>

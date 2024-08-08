@@ -1,10 +1,21 @@
 {
-  "name": "",
+  "name": "dsa-solutions",
   "version": "",
   "description": "My solutions to The Odin Project's assignments for Computer Science lessons",
   "dependencies": {
+    "astro": "^4.13.1",
+    "canvas-confetti": "^1.9.3",
+    "chart.js": "^4.4.3",
+    "chartjs-chart-graph": "^4.3.1",
     "eslint": "^9.8.0",
     "prettier": "^3.3.3"
   },
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  }
 }

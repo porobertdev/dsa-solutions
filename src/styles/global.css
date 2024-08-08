@@ -1,0 +1,15 @@
+@import url('./reset.css');
+
+:root {
+    --btn-bkg: black;
+    --btn-clr: white;
+    --btn-bkg-hover: rgb(161, 161, 161);
+    --btn-clr-hover: black;
+}
+
+/* MOBILE */
+@media screen and (max-width: 636px) {
+    body {
+        font-size: var(--fs-mobile);
+    }
+}

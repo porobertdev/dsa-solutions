@@ -1,0 +1,43 @@
+---
+const { msg } = Astro.props;
+---
+
+Log:
+<div class="log">{msg}</div>
+
+<style>
+    :root {
+        --fs-log: 1rem;
+        --fs-log-mobile: 1.5rem;
+    }
+
+    .log {
+        width: 400px;
+        height: 6rem;
+        border-radius: 6px;
+        overflow: scroll;
+
+        background-color: rgb(47, 47, 47);
+        color: rgb(213, 212, 212);
+        border: 1px solid black;
+        padding: 1rem;
+        line-break: 1rem;
+
+        .log-msg {
+            display: block;
+            font-size: var(--fs-log);
+        }
+    }
+
+    /* MOBILE */
+    @media screen and (max-width: 636px) {
+        .log {
+            width: 100%;
+            height: auto;
+
+            .log-msg {
+                font-size: var(--fs-log-mobile);
+            }
+        }
+    }
+</style>

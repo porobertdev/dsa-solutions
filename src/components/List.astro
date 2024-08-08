@@ -1,0 +1,31 @@
+---
+const problems = await Astro.glob('/src/pages/problems/*.astro');
+// const problems = import.meta.glob('/src/pages/problems/*.astro');
+console.log('🚀 ~ problems:', problems);
+---
+
+<ul class="problems-container">
+    {
+        problems.map((problem) => (
+            <li>
+                <a href={problem.url}>{problem.url.split('/').at(-1)}</a>
+            </li>
+        ))
+    }
+</ul>
+
+<style>
+    /* ul {
+        list-style: none;
+
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    } */
+
+    /* make it look like a card */
+    /* li {
+        width: 150px;
+        height: 150px;
+        border: 1px solid black;
+    } */
+</style>
