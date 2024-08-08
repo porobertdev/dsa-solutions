@@ -11,7 +11,7 @@ class Queue {
         this.size = 0;
     }
 
-    // #maxSize = 8;
+    #maxSize;
 
     enqueue(value) {
         // find tail node
@@ -50,8 +50,29 @@ class Queue {
         return dequeued;
     }
 
+    peek() {
+        return this.head ? this.head.value : null;
+    }
+
+    rear(node = this.head) {
+        if (node === null) {
+            return null;
+        } else if (node.next === null) {
+            return node.value;
+        }
+
+        // find tail
+        return this.rear(node.next);
+    }
+
     isEmpty() {
         return this.size === 0;
+    }
+
+    isFull() {
+        if (this.#maxSize) {
+            return this.size >= this.#maxSize;
+        }
     }
 }
 
@@ -63,5 +84,7 @@ queue.enqueue(50);
 queue.dequeue();
 queue.dequeue();
 console.log(queue);
+console.log(queue.peek());
+console.log(queue.rear());
 
 export default Queue;
