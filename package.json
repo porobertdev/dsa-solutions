@@ -16,7 +16,6 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "ghpages": "git subtree push --prefix dist origin gh-pages"
+    "preview": "astro preview"
   }
 }
