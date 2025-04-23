@@ -2,5 +2,6 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://porobert.dev',
+    site: 'https://porobertdev.github.io',
+    base: '/dsa-solutions',
 });
